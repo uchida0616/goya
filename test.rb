@@ -13,5 +13,5 @@ server = WEBrick::HTTPServer.new({
 #ファイルを表示する機能
 server.mount('/',WEBrick::HTTPServlet::ERBHandler, 'new.html.erb')
 server.mount('/data_one.cgi', WEBrick::HTTPServlet::CGIHandler, 'data_one.rb')
-server.mount('/data_two.cgi', WEBrick::HTTPServlet::CGIHandler, 'date_two.rb')
+server.mount('/data_two.cgi', WEBrick::HTTPServlet::CGIHandler, 'data_two.rb')
 server.start
