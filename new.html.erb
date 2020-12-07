@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>課題！！！！！</h1>
+    <!--pgを呼び出す-->
+    <% require 'pg' %>
+    <% connection = PG::connect(dbname: "goya") %>
+    <% connection.internal_encoding = "UTF-8" %>
+    <!--変数result_oneにゴーヤの大きさと販売相手の情報データを代入し、それをeach文で１つずつdataという配列
+    にいれる-->
+    <% result_one = connection.exec("select * from crops WHERE give_for != '自家消費';") %>
+    <% data = [] %>
+    <% result_one.each do |record_one| %>
+      <%  data << "ゴーヤの大きさ：#{record_one["weight"]}　売った相手：#{record_one["give_for"]}" %>
+    <% end %>
+    <form action="data_one.cgi" method="POST">
+      下記のボタンを押すと、自家消費以外のゴーヤの大きさと販売相手の情報ページに飛びます<br><br>
+      <input type="text" name="goya" value="<%= data.join(' ') %>">
+      <input type="submit" name="送信">
+    </form>
+    <% result_two = connection.exec("select * from crops WHERE quality = 'false';") %>
+    <% data_two = [] %>
+    <% result_two.each do |record_two| %>
+      <%  data_two << "ゴーヤの大きさ：#{record_two["weight"]}　売った相手：#{record_two["give_for"]}" %>
+    <% end %>
+    <form action="data_two.cgi" method="POST">
+      下記のボタンを押すと、品質の悪いゴーヤの大きさと販売相手の情報ページに飛びます<br><br>
+      <input type="text" name="goya_false" value="<%= data_two.join(' ') %>">
+      <input type="submit" name="送信">
+    </form>
+  </body>
+</html>
